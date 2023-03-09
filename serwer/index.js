@@ -42,30 +42,57 @@ app.get("/todo/:nazwa/:wyko/:termin",function(req,res){
 
 })
 
-app.get("/delete/:nazwa",function(req,res){
-    const nazwa = req.params.nazwa
+app.get("/delete/:id",function(req,res){
+    const id = req.params.id
 
-    const sql = `DELETE FORM todo WHERE nazwa = '${nazwa}'`
+    const sql = `DELETE FROM todo WHERE id = '${id}'`
 
     con.query(sql, function(err,result,fields){
 
         if(err){
             console.log(err)
-            res.send("nie dodano")
+            res.send("nie usunięto")
         }
-        else res.send("dodano")
+        else res.send("usunięto")
     })
 })
 
 app.get("/select",function(req,res){
 
-    const sql = `SELECT * FROM todo WHERE 1`
+    const sql = `SELECT * FROM todo `
     con.query(sql, function(err,result,fields){
+
     if(err) console.log(err)
     res.send(result)
     console.log(fields)
+
     })
 
+})
+
+app.get("/change/:id",function(req,res){
+
+    const id=req.params.id
+    
+    const sql = `UPDATE todo SET czy_wykonane = '1' WHERE todo.id = '${id}';`
+    con.query(sql, function(err,result,fields){
+        if(err) console.log(err)
+        res.send(result)
+        console.log(fields)
+    })
+    
+})
+app.get("/change1/:id",function(req,res){
+
+    const id=req.params.id
+    
+    const sql = `UPDATE todo SET czy_wykonane = '0' WHERE todo.id = '${id}';`
+    con.query(sql, function(err,result,fields){
+        if(err) console.log(err)
+        res.send(result)
+        console.log(fields)
+    })
+    
 })
 
 app.listen(3000)
